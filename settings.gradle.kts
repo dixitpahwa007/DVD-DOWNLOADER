@@ -21,117 +21,121 @@ rootProject.name = "DVD-DOWNLOADER"
 
 include(":app")
 
-// ============================================================
-// AndroidX Media3 1.5.1 - Local Source Build
-// ============================================================
-//
-// Media3 1.5.1 uses core_settings.gradle for local builds.
-// We reproduce its library includes here because the 1.5.1
-// source tree references datasource_httpengine, while that
-// directory is not present in our checkout.
-//
-// IMPORTANT:
-// media3-decoder-ffmpeg is included locally so that the
-// FFmpeg decoder built by the GitHub Actions workflow is used.
-// ============================================================
-
 val mediaDir = file("media")
 
 if (mediaDir.exists()) {
 
-    // Media3 expects this property when its modules are used
-    // from another Gradle build.
-    gradle.ext["androidxMediaSettingsDir"] =
-        mediaDir.canonicalPath
+    fun includeMedia3Module(
+        name: String,
+        directory: String
+    ) {
+        val projectPath = ":media3-lib-$name"
+        val projectDirectory = File(mediaDir, "libraries/$directory")
 
-    // Prefix used by Media3's local-module setup.
-    val mediaPrefix = ":media3-"
+        if (projectDirectory.isDirectory) {
+            include(projectPath)
+            project(projectPath).projectDir = projectDirectory
+        }
+    }
 
-    // --------------------------------------------------------
-    // Common
-    // --------------------------------------------------------
+    // Core
+    includeMedia3Module("common", "common")
+    includeMedia3Module("common-ktx", "common_ktx")
+    includeMedia3Module("container", "container")
 
-    include("${mediaPrefix}lib-common")
-    project("${mediaPrefix}lib-common").projectDir =
-        File(mediaDir, "libraries/common")
-
-    include("${mediaPrefix}lib-common-ktx")
-    project("${mediaPrefix}lib-common-ktx").projectDir =
-        File(mediaDir, "libraries/common_ktx")
-
-    include("${mediaPrefix}lib-container")
-    project("${mediaPrefix}lib-container").projectDir =
-        File(mediaDir, "libraries/container")
-
-    // --------------------------------------------------------
     // Session / ExoPlayer
-    // --------------------------------------------------------
+    includeMedia3Module("session", "session")
+    includeMedia3Module("exoplayer", "exoplayer")
+    includeMedia3Module("exoplayer-dash", "exoplayer_dash")
+    includeMedia3Module("exoplayer-hls", "exoplayer_hls")
+    includeMedia3Module("exoplayer-rtsp", "exoplayer_rtsp")
+    includeMedia3Module(
+        "exoplayer-smoothstreaming",
+        "exoplayer_smoothstreaming"
+    )
+    includeMedia3Module("exoplayer-ima", "exoplayer_ima")
+    includeMedia3Module(
+        "exoplayer-workmanager",
+        "exoplayer_workmanager"
+    )
 
-    include("${mediaPrefix}lib-session")
-    project("${mediaPrefix}lib-session").projectDir =
-        File(mediaDir, "libraries/session")
-
-    include("${mediaPrefix}lib-exoplayer")
-    project("${mediaPrefix}lib-exoplayer").projectDir =
-        File(mediaDir, "libraries/exoplayer")
-
-    include("${mediaPrefix}lib-exoplayer-dash")
-    project("${mediaPrefix}lib-exoplayer-dash").projectDir =
-        File(mediaDir, "libraries/exoplayer_dash")
-
-    include("${mediaPrefix}lib-exoplayer-hls")
-    project("${mediaPrefix}lib-exoplayer-hls").projectDir =
-        File(mediaDir, "libraries/exoplayer_hls")
-
-    include("${mediaPrefix}lib-exoplayer-rtsp")
-    project("${mediaPrefix}lib-exoplayer-rtsp").projectDir =
-        File(mediaDir, "libraries/exoplayer_rtsp")
-
-    include("${mediaPrefix}lib-exoplayer-smoothstreaming")
-    project("${mediaPrefix}lib-exoplayer-smoothstreaming").projectDir =
-        File(mediaDir, "libraries/exoplayer_smoothstreaming")
-
-    include("${mediaPrefix}lib-exoplayer-ima")
-    project("${mediaPrefix}lib-exoplayer-ima").projectDir =
-        File(mediaDir, "libraries/exoplayer_ima")
-
-    include("${mediaPrefix}lib-exoplayer-workmanager")
-    project("${mediaPrefix}lib-exoplayer-workmanager").projectDir =
-        File(mediaDir, "libraries/exoplayer_workmanager")
-
-    // --------------------------------------------------------
     // UI
-    // --------------------------------------------------------
+    includeMedia3Module("ui", "ui")
+    includeMedia3Module("ui-leanback", "ui_leanback")
 
-    include("${mediaPrefix}lib-ui")
-    project("${mediaPrefix}lib-ui").projectDir =
-        File(mediaDir, "libraries/ui")
-
-    include("${mediaPrefix}lib-ui-leanback")
-    project("${mediaPrefix}lib-ui-leanback").projectDir =
-        File(mediaDir, "libraries/ui_leanback")
-
-    // --------------------------------------------------------
     // DataSource
-    // --------------------------------------------------------
+    includeMedia3Module("database", "database")
+    includeMedia3Module("datasource", "datasource")
+    includeMedia3Module(
+        "datasource-cronet",
+        "datasource_cronet"
+    )
 
-    include("${mediaPrefix}lib-database")
-    project("${mediaPrefix}lib-database").projectDir =
-        File(mediaDir, "libraries/database")
-
-    include("${mediaPrefix}lib-datasource")
-    project("${mediaPrefix}lib-datasource").projectDir =
-        File(mediaDir, "libraries/datasource")
-
-    include("${mediaPrefix}lib-datasource-cronet")
-    project("${mediaPrefix}lib-datasource-cronet").projectDir =
-        File(mediaDir, "libraries/datasource_cronet")
-
-    // NOTE:
-    // datasource_httpengine is intentionally NOT included.
+    // Intentionally NOT including:
+    // libraries/datasource_httpengine
     //
-    // Media3 1.5.1 core_settings.gradle references it, but
-    // the directory does not exist in our checkout.
+    // That directory does not exist in the Media3 1.5.1
+    // checkout used by this workflow.
 
-    include("${mediaPrefix}lib-datasource-rtmp")
-    project("${mediaPrefix}lib-datasource-rtmp").projectDir =
+    includeMedia3Module(
+        "datasource-rtmp",
+        "datasource_rtmp"
+    )
+    includeMedia3Module(
+        "datasource-okhttp",
+        "datasource_okhttp"
+    )
+
+    // Decoders
+    includeMedia3Module("decoder", "decoder")
+    includeMedia3Module("decoder-av1", "decoder_av1")
+
+    // IMPORTANT:
+    // This is the locally built FFmpeg decoder.
+    includeMedia3Module(
+        "decoder-ffmpeg",
+        "decoder_ffmpeg"
+    )
+
+    includeMedia3Module(
+        "decoder-flac",
+        "decoder_flac"
+    )
+    includeMedia3Module(
+        "decoder-iamf",
+        "decoder_iamf"
+    )
+    includeMedia3Module(
+        "decoder-opus",
+        "decoder_opus"
+    )
+    includeMedia3Module(
+        "decoder-vp9",
+        "decoder_vp9"
+    )
+
+    // Extractor
+    includeMedia3Module("extractor", "extractor")
+
+    // Cast
+    includeMedia3Module("cast", "cast")
+
+    // Effects / Muxer / Transformer
+    includeMedia3Module("effect", "effect")
+    includeMedia3Module("muxer", "muxer")
+    includeMedia3Module("transformer", "transformer")
+
+    // Test utilities — only included when their directories exist.
+    includeMedia3Module(
+        "test-utils-robolectric",
+        "test_utils_robolectric"
+    )
+    includeMedia3Module(
+        "test-data",
+        "test_data"
+    )
+    includeMedia3Module(
+        "test-utils",
+        "test_utils"
+    )
+}
