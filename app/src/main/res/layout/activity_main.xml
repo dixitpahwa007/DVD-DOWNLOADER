@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="16dp">
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="DVD • Media Downloader" android:textSize="24sp" android:textStyle="bold"/>
+    <EditText android:id="@+id/urlInput" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Paste permitted media URL(s), one per line" android:inputType="textUri"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <Button android:id="@+id/discoverButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Discover Batch"/>
+        <Button android:id="@+id/analyzeButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Analyze"/>
+        <Button android:id="@+id/downloadButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Download"/>
+        <Button android:id="@+id/playerButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Play URL"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <Button android:id="@+id/libraryButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Local Media"/>
+        <Button android:id="@+id/folderButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Download Folder"/>
+        <Button android:id="@+id/playlistButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Playlist"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <Button android:id="@+id/libraryOpenButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Library"/>
+        <Button android:id="@+id/settingsButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Settings"/>
+        <Button android:id="@+id/historyButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="History"/>
+    </LinearLayout>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Downloads" android:textStyle="bold" android:paddingTop="12dp" android:paddingBottom="6dp"/>
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/downloadList" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
+</LinearLayout>

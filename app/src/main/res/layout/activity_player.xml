@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#000000">
+    <androidx.media3.ui.PlayerView android:id="@+id/playerView" android:layout_width="match_parent" android:layout_height="match_parent" android:keepScreenOn="true" android:show_buffering="when_playing" android:resizeMode="fit"/>
+    <LinearLayout android:id="@+id/topBar" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="top" android:padding="8dp" android:orientation="horizontal" android:background="#66000000">
+        <TextView android:id="@+id/playerInfo" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="DVD • Media Downloader" android:textColor="#FFFFFF" android:textStyle="bold"/>
+        <Button android:id="@+id/lockButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Lock"/>
+    </LinearLayout>
+    <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom" android:background="#99000000" android:scrollbars="none">
+      <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:padding="4dp">
+        <Button android:id="@+id/audioButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Audio"/>
+        <Button android:id="@+id/speedButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Speed"/>
+        <Button android:id="@+id/aspectButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Aspect"/>
+        <Button android:id="@+id/brightnessButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bright"/>
+        <Button android:id="@+id/avSyncButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="A/V Sync"/>
+        <Button android:id="@+id/lyricsButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Lyrics"/>
+        <Button android:id="@+id/audioFxButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Audio FX"/>
+        <Button android:id="@+id/pipButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PiP"/>
+        <Button android:id="@+id/abButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="A/B"/>
+        <Button android:id="@+id/frameButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Frame"/>
+        <Button android:id="@+id/screenshotButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Shot"/>
+        <Button android:id="@+id/infoButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Info"/>
+        <Button android:id="@+id/decoderButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Decoder"/>
+        <Button android:id="@+id/seekButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Seek"/>
+        <Button android:id="@+id/loopButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Loop"/>
+      </LinearLayout>
+    </HorizontalScrollView>
+</FrameLayout>
