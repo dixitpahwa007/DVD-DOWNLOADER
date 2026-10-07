@@ -25,8 +25,6 @@ val mediaDir = file("media")
 
 if (mediaDir.exists()) {
 
-    // Media3 1.5.1 expects these properties on Gradle's
-    // extra properties extension.
     gradle.extra["androidxMediaSettingsDir"] = mediaDir.canonicalPath
     gradle.extra["androidxMediaModulePrefix"] = "media3-"
 
@@ -69,4 +67,55 @@ if (mediaDir.exists()) {
     includeMedia3Module("ui", "ui")
     includeMedia3Module("ui-leanback", "ui_leanback")
 
-    include
+    includeMedia3Module("database", "database")
+
+    includeMedia3Module("datasource", "datasource")
+    includeMedia3Module("datasource-cronet", "datasource_cronet")
+    includeMedia3Module("datasource-rtmp", "datasource_rtmp")
+    includeMedia3Module("datasource-okhttp", "datasource_okhttp")
+
+    includeMedia3Module("decoder", "decoder")
+    includeMedia3Module("decoder-av1", "decoder_av1")
+    includeMedia3Module("decoder-ffmpeg", "decoder_ffmpeg")
+    includeMedia3Module("decoder-flac", "decoder_flac")
+    includeMedia3Module("decoder-iamf", "decoder_iamf")
+    includeMedia3Module("decoder-opus", "decoder_opus")
+    includeMedia3Module("decoder-vp9", "decoder_vp9")
+
+    includeMedia3Module("extractor", "extractor")
+
+    includeMedia3Module("effect", "effect")
+    includeMedia3Module("muxer", "muxer")
+    includeMedia3Module("transformer", "transformer")
+
+    val testUtilsDirectory = File(
+        mediaDir,
+        "libraries/test_utils"
+    )
+
+    if (testUtilsDirectory.isDirectory) {
+        include(":media3-test-utils")
+        project(":media3-test-utils").projectDir = testUtilsDirectory
+    }
+
+    val testUtilsRobolectricDirectory = File(
+        mediaDir,
+        "libraries/test_utils_robolectric"
+    )
+
+    if (testUtilsRobolectricDirectory.isDirectory) {
+        include(":media3-test-utils-robolectric")
+        project(":media3-test-utils-robolectric").projectDir =
+            testUtilsRobolectricDirectory
+    }
+
+    val testDataDirectory = File(
+        mediaDir,
+        "libraries/test_data"
+    )
+
+    if (testDataDirectory.isDirectory) {
+        include(":media3-test-data")
+        project(":media3-test-data").projectDir = testDataDirectory
+    }
+}
