@@ -25,9 +25,12 @@ val mediaDir = file("media")
 
 if (mediaDir.exists()) {
 
-    // Media3 1.5.1 expects these Gradle properties.
-    extra["androidxMediaSettingsDir"] = mediaDir.canonicalPath
-    extra["androidxMediaModulePrefix"] = "media3-"
+    /*
+     * Media3 1.5.1 expects these values on Gradle's
+     * extra properties extension.
+     */
+    gradle.extra["androidxMediaSettingsDir"] = mediaDir.canonicalPath
+    gradle.extra["androidxMediaModulePrefix"] = "media3-"
 
     fun includeMedia3Module(
         name: String,
@@ -55,9 +58,15 @@ if (mediaDir.exists()) {
     includeMedia3Module("exoplayer-dash", "exoplayer_dash")
     includeMedia3Module("exoplayer-hls", "exoplayer_hls")
     includeMedia3Module("exoplayer-rtsp", "exoplayer_rtsp")
-    includeMedia3Module("exoplayer-smoothstreaming", "exoplayer_smoothstreaming")
+    includeMedia3Module(
+        "exoplayer-smoothstreaming",
+        "exoplayer_smoothstreaming"
+    )
     includeMedia3Module("exoplayer-ima", "exoplayer_ima")
-    includeMedia3Module("exoplayer-workmanager", "exoplayer_workmanager")
+    includeMedia3Module(
+        "exoplayer-workmanager",
+        "exoplayer_workmanager"
+    )
 
     includeMedia3Module("ui", "ui")
     includeMedia3Module("ui-leanback", "ui_leanback")
@@ -72,7 +81,7 @@ if (mediaDir.exists()) {
     includeMedia3Module("decoder", "decoder")
     includeMedia3Module("decoder-av1", "decoder_av1")
 
-    // FFmpeg decoder is built locally by the GitHub Actions workflow.
+    // Locally built FFmpeg decoder.
     includeMedia3Module("decoder-ffmpeg", "decoder_ffmpeg")
 
     includeMedia3Module("decoder-flac", "decoder_flac")
@@ -86,7 +95,10 @@ if (mediaDir.exists()) {
     includeMedia3Module("muxer", "muxer")
     includeMedia3Module("transformer", "transformer")
 
-    // Media3 1.5.1 refers to this project as :media3-test-utils.
+    /*
+     * Media3 1.5.1 expects the test-utils project to be named
+     * :media3-test-utils, not :media3-lib-test-utils.
+     */
     val testUtilsDirectory = File(
         mediaDir,
         "libraries/test_utils"
@@ -97,6 +109,8 @@ if (mediaDir.exists()) {
         project(":media3-test-utils").projectDir = testUtilsDirectory
     }
 
-    // Cast is intentionally not included because the app does not use
-    // androidx.media3:media3-cast.
+    /*
+     * Cast is not included because the app does not use
+     * androidx.media3:media3-cast.
+     */
 }
