@@ -1,4 +1,5 @@
 import org.gradle.api.initialization.resolve.RepositoriesMode
+import org.gradle.api.plugins.ExtensionAware
 
 pluginManagement {
     repositories {
@@ -29,13 +30,11 @@ val mediaDir = file("media")
 
 if (mediaDir.exists()) {
 
-    // Media3 1.5.1 uses these extra properties from its
-    // core_settings.gradle and module build scripts.
-    //
-    // IMPORTANT:
-    // Kotlin DSL uses "extra", not "gradle.ext".
-    extra["androidxMediaSettingsDir"] = mediaDir.canonicalPath
-    extra["androidxMediaModulePrefix"] = "media3-"
+    (gradle as ExtensionAware).extra["androidxMediaSettingsDir"] =
+        mediaDir.canonicalPath
+
+    (gradle as ExtensionAware).extra["androidxMediaModulePrefix"] =
+        "media3-"
 
     // --------------------------------------------------------
     // Helper
@@ -153,8 +152,7 @@ if (mediaDir.exists()) {
         "datasource_cronet"
     )
 
-    // datasource_httpengine is intentionally NOT included.
-    // Media3 1.5.1 does not contain that directory.
+    // datasource_httpengine is NOT present in Media3 1.5.1.
 
     includeMedia3Module(
         "datasource-rtmp",
@@ -180,8 +178,6 @@ if (mediaDir.exists()) {
         "decoder_av1"
     )
 
-    // IMPORTANT:
-    // Local Media3 FFmpeg decoder.
     includeMedia3Module(
         "decoder-ffmpeg",
         "decoder_ffmpeg"
