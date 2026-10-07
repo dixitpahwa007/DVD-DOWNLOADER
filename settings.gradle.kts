@@ -29,11 +29,18 @@ val mediaDir = file("media")
 
 if (mediaDir.exists()) {
 
-    // Required by Media3 1.5.1 build scripts.
-    gradle.ext["androidxMediaSettingsDir"] = mediaDir.canonicalPath
-    gradle.ext["androidxMediaModulePrefix"] = "media3-"
+    // Media3 1.5.1 uses these extra properties from its
+    // core_settings.gradle and module build scripts.
+    //
+    // IMPORTANT:
+    // Kotlin DSL uses "extra", not "gradle.ext".
+    extra["androidxMediaSettingsDir"] = mediaDir.canonicalPath
+    extra["androidxMediaModulePrefix"] = "media3-"
 
-    // Include a Media3 module only if its directory exists.
+    // --------------------------------------------------------
+    // Helper
+    // --------------------------------------------------------
+
     fun includeMedia3Module(
         name: String,
         directory: String
@@ -50,75 +57,131 @@ if (mediaDir.exists()) {
         }
     }
 
-    // ========================================================
+    // --------------------------------------------------------
     // Core
-    // ========================================================
+    // --------------------------------------------------------
 
-    includeMedia3Module("common", "common")
-    includeMedia3Module("common-ktx", "common_ktx")
-    includeMedia3Module("container", "container")
+    includeMedia3Module(
+        "common",
+        "common"
+    )
 
-    // ========================================================
+    includeMedia3Module(
+        "common-ktx",
+        "common_ktx"
+    )
+
+    includeMedia3Module(
+        "container",
+        "container"
+    )
+
+    // --------------------------------------------------------
     // Session / ExoPlayer
-    // ========================================================
+    // --------------------------------------------------------
 
-    includeMedia3Module("session", "session")
-    includeMedia3Module("exoplayer", "exoplayer")
-    includeMedia3Module("exoplayer-dash", "exoplayer_dash")
-    includeMedia3Module("exoplayer-hls", "exoplayer_hls")
-    includeMedia3Module("exoplayer-rtsp", "exoplayer_rtsp")
+    includeMedia3Module(
+        "session",
+        "session"
+    )
+
+    includeMedia3Module(
+        "exoplayer",
+        "exoplayer"
+    )
+
+    includeMedia3Module(
+        "exoplayer-dash",
+        "exoplayer_dash"
+    )
+
+    includeMedia3Module(
+        "exoplayer-hls",
+        "exoplayer_hls"
+    )
+
+    includeMedia3Module(
+        "exoplayer-rtsp",
+        "exoplayer_rtsp"
+    )
+
     includeMedia3Module(
         "exoplayer-smoothstreaming",
         "exoplayer_smoothstreaming"
     )
-    includeMedia3Module("exoplayer-ima", "exoplayer_ima")
+
+    includeMedia3Module(
+        "exoplayer-ima",
+        "exoplayer_ima"
+    )
+
     includeMedia3Module(
         "exoplayer-workmanager",
         "exoplayer_workmanager"
     )
 
-    // ========================================================
+    // --------------------------------------------------------
     // UI
-    // ========================================================
+    // --------------------------------------------------------
 
-    includeMedia3Module("ui", "ui")
-    includeMedia3Module("ui-leanback", "ui_leanback")
+    includeMedia3Module(
+        "ui",
+        "ui"
+    )
 
-    // ========================================================
+    includeMedia3Module(
+        "ui-leanback",
+        "ui_leanback"
+    )
+
+    // --------------------------------------------------------
     // DataSource
-    // ========================================================
+    // --------------------------------------------------------
 
-    includeMedia3Module("database", "database")
-    includeMedia3Module("datasource", "datasource")
+    includeMedia3Module(
+        "database",
+        "database"
+    )
+
+    includeMedia3Module(
+        "datasource",
+        "datasource"
+    )
+
     includeMedia3Module(
         "datasource-cronet",
         "datasource_cronet"
     )
 
-    // datasource_httpengine is intentionally not included.
-    // It is not present in the Media3 1.5.1 checkout.
+    // datasource_httpengine is intentionally NOT included.
+    // Media3 1.5.1 does not contain that directory.
 
     includeMedia3Module(
         "datasource-rtmp",
         "datasource_rtmp"
     )
+
     includeMedia3Module(
         "datasource-okhttp",
         "datasource_okhttp"
     )
 
-    // ========================================================
+    // --------------------------------------------------------
     // Decoders
-    // ========================================================
+    // --------------------------------------------------------
 
-    includeMedia3Module("decoder", "decoder")
+    includeMedia3Module(
+        "decoder",
+        "decoder"
+    )
+
     includeMedia3Module(
         "decoder-av1",
         "decoder_av1"
     )
 
     // IMPORTANT:
-    // This is the locally built FFmpeg decoder.
+    // Local Media3 FFmpeg decoder.
     includeMedia3Module(
         "decoder-ffmpeg",
         "decoder_ffmpeg"
@@ -128,66 +191,73 @@ if (mediaDir.exists()) {
         "decoder-flac",
         "decoder_flac"
     )
+
     includeMedia3Module(
         "decoder-iamf",
         "decoder_iamf"
     )
+
     includeMedia3Module(
         "decoder-opus",
         "decoder_opus"
     )
+
     includeMedia3Module(
         "decoder-vp9",
         "decoder_vp9"
     )
 
-    // ========================================================
+    // --------------------------------------------------------
     // Extractor
-    // ========================================================
+    // --------------------------------------------------------
 
     includeMedia3Module(
         "extractor",
         "extractor"
     )
 
-    // ========================================================
+    // --------------------------------------------------------
     // Cast
-    // ========================================================
+    // --------------------------------------------------------
 
     includeMedia3Module(
         "cast",
         "cast"
     )
 
-    // ========================================================
+    // --------------------------------------------------------
     // Effects / Muxer / Transformer
-    // ========================================================
+    // --------------------------------------------------------
 
     includeMedia3Module(
         "effect",
         "effect"
     )
+
     includeMedia3Module(
         "muxer",
         "muxer"
     )
+
     includeMedia3Module(
         "transformer",
         "transformer"
     )
 
-    // ========================================================
+    // --------------------------------------------------------
     // Test utilities
-    // ========================================================
+    // --------------------------------------------------------
 
     includeMedia3Module(
         "test-utils-robolectric",
         "test_utils_robolectric"
     )
+
     includeMedia3Module(
         "test-data",
         "test_data"
     )
+
     includeMedia3Module(
         "test-utils",
         "test_utils"
