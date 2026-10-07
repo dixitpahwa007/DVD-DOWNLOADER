@@ -25,10 +25,8 @@ val mediaDir = file("media")
 
 if (mediaDir.exists()) {
 
-    /*
-     * Media3 1.5.1 expects these values on Gradle's
-     * extra properties extension.
-     */
+    // Media3 1.5.1 expects these properties on Gradle's
+    // extra properties extension.
     gradle.extra["androidxMediaSettingsDir"] = mediaDir.canonicalPath
     gradle.extra["androidxMediaModulePrefix"] = "media3-"
 
@@ -81,7 +79,7 @@ if (mediaDir.exists()) {
     includeMedia3Module("decoder", "decoder")
     includeMedia3Module("decoder-av1", "decoder_av1")
 
-    // Locally built FFmpeg decoder.
+    // Local Media3 FFmpeg decoder.
     includeMedia3Module("decoder-ffmpeg", "decoder_ffmpeg")
 
     includeMedia3Module("decoder-flac", "decoder_flac")
@@ -96,8 +94,7 @@ if (mediaDir.exists()) {
     includeMedia3Module("transformer", "transformer")
 
     /*
-     * Media3 1.5.1 expects the test-utils project to be named
-     * :media3-test-utils, not :media3-lib-test-utils.
+     * Media3 1.5.1 uses :media3-test-utils.
      */
     val testUtilsDirectory = File(
         mediaDir,
@@ -110,7 +107,19 @@ if (mediaDir.exists()) {
     }
 
     /*
-     * Cast is not included because the app does not use
-     * androidx.media3:media3-cast.
+     * Media3 1.5.1 uses :media3-test-data.
+     */
+    val testDataDirectory = File(
+        mediaDir,
+        "libraries/test_data"
+    )
+
+    if (testDataDirectory.isDirectory) {
+        include(":media3-test-data")
+        project(":media3-test-data").projectDir = testDataDirectory
+    }
+
+    /*
+     * Cast is not required by this application.
      */
 }
