@@ -89,18 +89,36 @@ if (mediaDir.exists()) {
     includeMedia3Module("muxer", "muxer")
     includeMedia3Module("transformer", "transformer")
 
-    includeMedia3Module(
-        "test-utils-robolectric",
-        "test_utils_robolectric"
+    val testUtilsRobolectricDir = File(
+        mediaDir,
+        "libraries/test_utils_robolectric"
     )
 
-    includeMedia3Module(
-        "test-data",
-        "test_data"
+    if (testUtilsRobolectricDir.isDirectory) {
+        include(":media3-test-utils-robolectric")
+        project(":media3-test-utils-robolectric").projectDir =
+            testUtilsRobolectricDir
+    }
+
+    val testDataDir = File(
+        mediaDir,
+        "libraries/test_data"
     )
 
-    includeMedia3Module(
-        "test-utils",
-        "test_utils"
+    if (testDataDir.isDirectory) {
+        include(":media3-test-data")
+        project(":media3-test-data").projectDir =
+            testDataDir
+    }
+
+    val testUtilsDir = File(
+        mediaDir,
+        "libraries/test_utils"
     )
+
+    if (testUtilsDir.isDirectory) {
+        include(":media3-test-utils")
+        project(":media3-test-utils").projectDir =
+            testUtilsDir
+    }
 }
