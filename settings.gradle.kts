@@ -28,7 +28,6 @@ include(":app")
 val mediaDir = file("media")
 
 if (mediaDir.exists()) {
-
     gradle.extra["androidxMediaSettingsDir"] = mediaDir.canonicalPath
     gradle.extra["androidxMediaModulePrefix"] = "media3-"
 
@@ -48,12 +47,10 @@ if (mediaDir.exists()) {
         }
     }
 
-    // Core
     includeMedia3Module("common", "common")
     includeMedia3Module("common-ktx", "common_ktx")
     includeMedia3Module("container", "container")
 
-    // Session / ExoPlayer
     includeMedia3Module("session", "session")
     includeMedia3Module("exoplayer", "exoplayer")
     includeMedia3Module("exoplayer-dash", "exoplayer_dash")
@@ -69,18 +66,15 @@ if (mediaDir.exists()) {
         "exoplayer_workmanager"
     )
 
-    // UI
     includeMedia3Module("ui", "ui")
     includeMedia3Module("ui-leanback", "ui_leanback")
 
-    // DataSource
     includeMedia3Module("database", "database")
     includeMedia3Module("datasource", "datasource")
     includeMedia3Module("datasource-cronet", "datasource_cronet")
     includeMedia3Module("datasource-rtmp", "datasource_rtmp")
     includeMedia3Module("datasource-okhttp", "datasource_okhttp")
 
-    // Decoders
     includeMedia3Module("decoder", "decoder")
     includeMedia3Module("decoder-av1", "decoder_av1")
     includeMedia3Module("decoder-ffmpeg", "decoder_ffmpeg")
@@ -89,15 +83,12 @@ if (mediaDir.exists()) {
     includeMedia3Module("decoder-opus", "decoder_opus")
     includeMedia3Module("decoder-vp9", "decoder_vp9")
 
-    // Extractor
     includeMedia3Module("extractor", "extractor")
 
-    // Effects / Muxer / Transformer
     includeMedia3Module("effect", "effect")
     includeMedia3Module("muxer", "muxer")
     includeMedia3Module("transformer", "transformer")
 
-    // Media3 test support required by some Media3 modules
     includeMedia3Module(
         "test-utils-robolectric",
         "test_utils_robolectric"
