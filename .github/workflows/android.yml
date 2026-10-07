@@ -11,13 +11,13 @@ jobs:
 
     steps:
       # ---------------------------------------------------------
-      # 1. Checkout your DVD-DOWNLOADER project
+      # Checkout your project
       # ---------------------------------------------------------
       - name: Checkout source
         uses: actions/checkout@v4
 
       # ---------------------------------------------------------
-      # 2. Java 17
+      # Java 17
       # ---------------------------------------------------------
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -26,19 +26,55 @@ jobs:
           java-version: '17'
 
       # ---------------------------------------------------------
-      # 3. Checkout AndroidX Media3 1.5.1
+      # Android SDK + NDK
       #
-      # This is required because
-      # androidx.media3:media3-decoder-ffmpeg:1.5.1
-      # is NOT published to Google Maven.
-      #
-      # It will create:
-      #
-      # media/
-      # ├── build-logic-settings/
-      # ├── libraries/
-      # │   └── decoder_ffmpeg/
-      # └── ...
+      # GitHub's Ubuntu runner already contains the Android SDK.
+      # Use sdkmanager directly rather than setup-android.
+      # ---------------------------------------------------------
+      - name: Install Android SDK components
+        shell: bash
+        run: |
+          set -euxo pipefail
+
+          SDKMANAGER="${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager"
+
+          if [ ! -x "$SDKMANAGER" ]; then
+            SDKMANAGER="$(find "$ANDROID_SDK_ROOT/cmdline-tools" \
+              -name sdkmanager \
+              -type f \
+              | head -n 1)"
+          fi
+
+          echo "Using sdkmanager:"
+          "$SDKMANAGER" --version
+
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
+
+          "$SDKMANAGER" \
+            "platform-tools" \
+            "cmake;3.22.1" \
+            "ndk;26.1.10909125"
+
+      # ---------------------------------------------------------
+      # Set NDK environment
+      # ---------------------------------------------------------
+      - name: Configure Android NDK
+        shell: bash
+        run: |
+          set -euxo pipefail
+
+          NDK_PATH="${ANDROID_SDK_ROOT}/ndk/26.1.10909125"
+
+          test -d "$NDK_PATH"
+
+          echo "ANDROID_NDK_HOME=$NDK_PATH" >> "$GITHUB_ENV"
+          echo "ANDROID_NDK_ROOT=$NDK_PATH" >> "$GITHUB_ENV"
+
+          echo "NDK:"
+          "$NDK_PATH/ndk-build" --version
+
+      # ---------------------------------------------------------
+      # Checkout AndroidX Media3 1.5.1
       # ---------------------------------------------------------
       - name: Checkout AndroidX Media3 1.5.1
         uses: actions/checkout@v4
@@ -49,164 +85,85 @@ jobs:
           fetch-depth: 1
 
       # ---------------------------------------------------------
-      # 4. Install Android SDK components
+      # Prepare FFmpeg 6.0
       # ---------------------------------------------------------
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      # ---------------------------------------------------------
-      # 5. Install NDK 26.1.10909125
-      #
-      # Media3 FFmpeg build is documented/tested around NDK r26b.
-      # 26.1.10909125 is the Android SDK package corresponding
-      # to NDK r26b.
-      # ---------------------------------------------------------
-      - name: Install Android NDK
+      - name: Download FFmpeg 6.0
         shell: bash
         run: |
-          set -e
+          set -euxo pipefail
 
-          yes | sdkmanager --licenses >/dev/null || true
+          FFMPEG_DIR="media/libraries/decoder_ffmpeg/src/main/jni/ffmpeg"
 
-          sdkmanager "platform-tools"
-          sdkmanager "cmake;3.22.1"
-          sdkmanager "ndk;26.1.10909125"
+          rm -rf "$FFMPEG_DIR"
 
-          echo "ANDROID_NDK_HOME=$ANDROID_SDK_ROOT/ndk/26.1.10909125" >> "$GITHUB_ENV"
-          echo "ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/26.1.10909125" >> "$GITHUB_ENV"
+          git clone \
+            --branch release/6.0 \
+            --depth 1 \
+            https://github.com/FFmpeg/FFmpeg.git \
+            "$FFMPEG_DIR"
 
-      # ---------------------------------------------------------
-      # 6. Verify the NDK
-      # ---------------------------------------------------------
-      - name: Verify Android NDK
-        shell: bash
-        run: |
-          set -e
+          test -f "$FFMPEG_DIR/configure"
 
-          echo "ANDROID_NDK_HOME=$ANDROID_NDK_HOME"
-
-          test -d "$ANDROID_NDK_HOME"
-
-          "$ANDROID_NDK_HOME/ndk-build" --version
+          echo "FFmpeg source prepared:"
+          "$FFMPEG_DIR/ffmpeg -version" 2>/dev/null || true
 
       # ---------------------------------------------------------
-      # 7. Prepare FFmpeg source directory
-      #
-      # AndroidX expects:
-      #
-      # media/libraries/decoder_ffmpeg/src/main/jni/ffmpeg
+      # Build Media3 FFmpeg decoder
       # ---------------------------------------------------------
-      - name: Prepare FFmpeg
+      - name: Build Media3 FFmpeg decoder
         shell: bash
         working-directory: media
         run: |
-          set -e
+          set -euxo pipefail
 
-          FFMPEG_MODULE_PATH="$PWD/libraries/decoder_ffmpeg/src/main"
+          chmod +x libraries/decoder_ffmpeg/src/main/jni/build_ffmpeg.sh
 
-          mkdir -p "$FFMPEG_MODULE_PATH/jni"
-
-          if [ ! -d "$FFMPEG_MODULE_PATH/jni/ffmpeg/.git" ]; then
-            git clone \
-              --branch release/6.0 \
-              --depth 1 \
-              https://github.com/FFmpeg/FFmpeg.git \
-              "$FFMPEG_MODULE_PATH/jni/ffmpeg"
-          fi
-
-          echo "FFMPEG_MODULE_PATH=$FFMPEG_MODULE_PATH" >> "$GITHUB_ENV"
-
-      # ---------------------------------------------------------
-      # 8. Build FFmpeg for Android
-      #
-      # These are FFmpeg AUDIO decoders used by the official
-      # Media3 decoder_ffmpeg module.
-      #
-      # Add/remove decoder names here if your application needs
-      # a different codec set.
-      # ---------------------------------------------------------
-      - name: Build FFmpeg native libraries
-        shell: bash
-        working-directory: media
-        run: |
-          set -e
-
-          FFMPEG_MODULE_PATH="$PWD/libraries/decoder_ffmpeg/src/main"
-          NDK_PATH="$ANDROID_NDK_HOME"
-          HOST_PLATFORM="linux-x86_64"
-
-          # Must be >= 21 for the Media3 FFmpeg build.
-          ANDROID_ABI=21
-
-          ENABLED_DECODERS=(
-            aac
-            ac3
-            eac3
-            flac
-            mp3
-            opus
-            vorbis
-            pcm_alaw
-            pcm_mulaw
-          )
-
-          cd "$FFMPEG_MODULE_PATH/jni"
-
-          chmod +x build_ffmpeg.sh
+          cd libraries/decoder_ffmpeg/src/main/jni
 
           ./build_ffmpeg.sh \
-            "$FFMPEG_MODULE_PATH" \
-            "$NDK_PATH" \
-            "$HOST_PLATFORM" \
-            "$ANDROID_ABI" \
-            "${ENABLED_DECODERS[@]}"
+            ../../main \
+            "$ANDROID_NDK_HOME" \
+            linux-x86_64 \
+            21 \
+            aac \
+            ac3 \
+            eac3 \
+            flac \
+            mp3 \
+            opus \
+            vorbis \
+            pcm_alaw \
+            pcm_mulaw
 
       # ---------------------------------------------------------
-      # 9. Show generated FFmpeg files
-      #
-      # This makes the GitHub Actions log useful if the build
-      # fails later.
+      # Verify FFmpeg output
       # ---------------------------------------------------------
-      - name: Verify FFmpeg build output
+      - name: Verify FFmpeg libraries
         shell: bash
         run: |
-          set -e
+          set -euxo pipefail
 
-          echo "FFmpeg directory:"
-          find media/libraries/decoder_ffmpeg/src/main/jni/ffmpeg \
-            -maxdepth 2 \
-            -type f \
-            | head -50
+          echo "Searching for generated native libraries..."
 
-          echo
-          echo "Native libraries:"
-          find media/libraries/decoder_ffmpeg/src/main \
+          find media/libraries/decoder_ffmpeg \
             -type f \
             \( -name "*.so" -o -name "*.a" \) \
             -print
 
       # ---------------------------------------------------------
-      # 10. Make Gradle executable
+      # Gradle
       # ---------------------------------------------------------
       - name: Grant execute permission
         run: chmod +x gradlew
 
       # ---------------------------------------------------------
-      # 11. Build APK
-      #
-      # Your existing dependency:
-      #
-      # implementation(
-      #     "androidx.media3:media3-decoder-ffmpeg:1.5.1"
-      # )
-      #
-      # will now resolve from the local AndroidX Media3 checkout.
+      # Build APK
       # ---------------------------------------------------------
       - name: Build APK
         run: ./gradlew assembleDebug --stacktrace
 
       # ---------------------------------------------------------
-      # 12. Upload APK
+      # Upload APK
       # ---------------------------------------------------------
       - name: Upload APK
         uses: actions/upload-artifact@v4
