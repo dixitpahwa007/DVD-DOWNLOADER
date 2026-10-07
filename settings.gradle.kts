@@ -94,7 +94,7 @@ if (mediaDir.exists()) {
     includeMedia3Module("transformer", "transformer")
 
     /*
-     * Media3 1.5.1 uses :media3-test-utils.
+     * Media3 1.5.1 test utilities.
      */
     val testUtilsDirectory = File(
         mediaDir,
@@ -107,7 +107,21 @@ if (mediaDir.exists()) {
     }
 
     /*
-     * Media3 1.5.1 uses :media3-test-data.
+     * Media3 1.5.1 Robolectric test utilities.
+     */
+    val testUtilsRobolectricDirectory = File(
+        mediaDir,
+        "libraries/test_utils_robolectric"
+    )
+
+    if (testUtilsRobolectricDirectory.isDirectory) {
+        include(":media3-test-utils-robolectric")
+        project(":media3-test-utils-robolectric").projectDir =
+            testUtilsRobolectricDirectory
+    }
+
+    /*
+     * Media3 1.5.1 test data.
      */
     val testDataDirectory = File(
         mediaDir,
