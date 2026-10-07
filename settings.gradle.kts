@@ -1,4 +1,17 @@
-pluginManagement { repositories { google(); mavenCentral(); maven { url = uri("https://artifactory.appodeal.com/appodeal-public/") }; gradlePluginPortal() } }
-dependencyResolutionManagement { repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS); repositories { google(); mavenCentral(); maven { url = uri("https://artifactory.appodeal.com/appodeal-public/") } } }
-rootProject.name = "MediaDownloader"
-include(":app")
+import androidx.media3.buildlogic.includeMedia3
+
+pluginManagement {
+    includeBuild("media/build-logic-settings")
+
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    id("gradlebuild.media3-settings-logic")
+}
+
+includeMedia3(file("media"))
