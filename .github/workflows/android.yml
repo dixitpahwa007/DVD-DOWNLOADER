@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - master
+
   pull_request:
     branches:
       - main
       - master
+
   workflow_dispatch:
 
 jobs:
@@ -32,7 +34,8 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Check build tool compatibility
-        run: ./scripts/check-build-tool-compatibility.sh
+        shell: bash
+        run: bash ./scripts/check-build-tool-compatibility.sh
 
       - name: Build Debug APK
         run: ./gradlew assembleDebug --stacktrace
