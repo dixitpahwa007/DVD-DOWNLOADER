@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#06101F">
+
+    <ScrollView
+        android:id="@+id/homeScroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        android:paddingBottom="92dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="14dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="14dp">
+
+            <!-- Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:contentDescription="DVD"
+                    android:src="@drawable/ic_dvd" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingStart="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dixit Media Downloader DVD"
+                        android:textColor="#F5F7FF"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Download • Play • Enjoy"
+                        android:textColor="#67D8FF"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/topSettingsButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="⚙"
+                    android:textColor="#DCE6F8"
+                    android:textSize="21sp"
+                    android:background="@drawable/bg_platform"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
+
+            <!-- Search -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_search"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="28dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="⌕"
+                    android:textColor="#DDE8FF"
+                    android:textSize="23sp" />
+                <EditText
+                    android:id="@+id/urlInput"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="Search or enter URL"
+                    android:hintTextColor="#8B9AB4"
+                    android:inputType="textUri"
+                    android:maxLines="1"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:textColor="#F2F6FF"
+                    android:textColorHint="#8B9AB4"
+                    android:textSize="13sp" />
+                <TextView
+                    android:id="@+id:analyzeButton"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:gravity="center"
+                    android:text="↗"
+                    android:textColor="#E9EDFF"
+                    android:textSize="20sp"
+                    android:background="@drawable/bg_primary_pill"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
+
+            <!-- Platform shortcuts -->
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:columnCount="4"
+                android:rowCount="2"
+                android:useDefaultMargins="false">
+
+                <TextView android:id="@+id/youtubeButton" style="@style/DvdPlatform" android:text="▶\nYouTube" />
+                <TextView android:id="@+id/facebookButton" style="@style/DvdPlatform" android:text="f\nFacebook" />
+                <TextView android:id="@+id/instagramButton" style="@style/DvdPlatform" android:text="◎\nInstagram" />
+                <TextView android:id="@+id/tiktokButton" style="@style/DvdPlatform" android:text="♪\nTikTok" />
+                <TextView style="@style/DvdPlatform" android:text="𝕏\nX (Twitter)" />
+                <TextView style="@style/DvdPlatform" android:text="V\nVimeo" />
+                <TextView style="@style/DvdPlatform" android:text="d\nDailymotion" />
+                <TextView style="@style/DvdPlatform" android:text="•••\nMore" />
+            </GridLayout>
+
+            <!-- Batch card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_primary_pill"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="14dp"
+                android:paddingEnd="10dp">
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="▦"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingStart="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Discover Batch"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Enter a playlist or channel URL to download multiple media."
+                        android:textColor="#E2DEFF"
+                        android:textSize="9sp" />
+                </LinearLayout>
+                <Button
+                    android:id="@+id/discoverButton"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:backgroundTint="#FFFFFF"
+                    android:text="›"
+                    android:textColor="#6652E8"
+                    android:textSize="22sp" />
+            </LinearLayout>
+
+            <!-- Recent -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Recent"
+                    android:textColor="#F4F7FF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id:historyButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="View all"
+                    android:textColor="#7B8DFF"
+                    android:textSize="11sp"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <include layout="@layout/item_recent_home" />
+                <include layout="@layout/item_recent_home_2" />
+                <include layout="@layout/item_recent_home_3" />
+            </LinearLayout>
+
+            <!-- Real download manager list -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Download queue"
+                android:textColor="#F4F7FF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/downloadList"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginTop="6dp"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- Hidden compatibility actions: retained for existing download features. -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:visibility="gone">
+                <Button android:id="@+id/downloadButton" android:layout_width="1dp" android:layout_height="1dp" android:text="Download" />
+                <Button android:id="@+id/playerButton" android:layout_width="1dp" android:layout_height="1dp" android:text="Play" />
+                <Button android:id="@+id/libraryButton" android:layout_width="1dp" android:layout_height="1dp" android:text="Local" />
+                <Button android:id="@+id/folderButton" android:layout_width="1dp" android:layout_height="1dp" android:text="Folder" />
+                <Button android:id="@+id/playlistButton" android:layout_width="1dp" android:layout_height="1dp" android:text="Playlist" />
+                <Button android:id="@+id/libraryOpenButton" android:layout_width="1dp" android:layout_height="1dp" android:text="Library" />
+                <Button android:id="@+id/settingsButton" android:layout_width="1dp" android:layout_height="1dp" android:text="Settings" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom navigation matching the reference application's persistent navigation. -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:layout_gravity="bottom"
+        android:background="#09172B"
+        android:elevation="12dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
+        <TextView android:id="@+id/homeNavButton" style="@style/DvdNav" android:text="⌂\nHome" android:textColor="#FFFFFF" />
+        <TextView android:id="@+id/downloadsNavButton" style="@style/DvdNav" android:text="⇩\nDownloads" />
+        <TextView android:id="@+id/libraryNavButton" style="@style/DvdNav" android:text="▣\nLibrary" />
+        <TextView android:id="@+id/settingsNavButton" style="@style/DvdNav" android:text="⚙\nSettings" />
+    </LinearLayout>
+
+    <!-- Splash -->
+    <FrameLayout
+        android:id="@+id/splashOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_splash">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="112dp"
+                android:layout_height="112dp"
+                android:contentDescription="Dixit Media Downloader"
+                android:src="@drawable/ic_dvd" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Dixit"
+                android:textColor="#FFFFFF"
+                android:textSize="38sp"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Media Downloader DVD"
+                android:textColor="#F2F5FF"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Download  •  Play  •  Enjoy"
+                android:textColor="#67D8FF"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </FrameLayout>
+</FrameLayout>
